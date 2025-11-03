@@ -1,0 +1,5 @@
+{
+  "name": "Precision Quiz",
+  "description": "An AI-powered web application that extracts multiple-choice questions (MCQs) from an uploaded document. It supports PDF, DOCX, and TXT files, offers light and dark themes, and allows users to download the generated MCQs.",
+  "requestFramePermissions": []
+}
