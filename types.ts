@@ -37,7 +37,7 @@ export interface MCQ {
 /**
  * Represents the different states or views of the application, controlling the UI flow.
  */
-export type AppState = 'welcome' | 'loading' | 'quiz' | 'results';
+export type AppState = 'welcome' | 'loading' | 'quiz' | 'results' | 'test_runner' | 'test_results';
 
 /**
  * Defines the structure for a user's answer to a quiz question.

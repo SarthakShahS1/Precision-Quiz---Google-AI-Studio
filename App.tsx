@@ -14,6 +14,8 @@ import ResultsView from './components/ResultsView';
 import Loader from './components/Loader';
 import ErrorMessage from './components/ErrorMessage';
 import Welcome from './components/Welcome';
+import TestRunnerView from './components/TestRunnerView';
+import TestResultsView from './components/TestResultsView';
 import { extractTextFromFile } from './services/documentProcessor';
 import { generateMCQsFromText } from './services/geminiService';
 
@@ -71,6 +73,16 @@ const App: React.FC = () => {
     localStorage.setItem('theme', theme);
   }, [theme]);
   
+  // Effect to simulate test execution and transition to results
+  useEffect(() => {
+    if (appState === 'test_runner') {
+      const timer = setTimeout(() => {
+        setAppState('test_results');
+      }, 2500); // Simulate a 2.5-second test run
+      return () => clearTimeout(timer);
+    }
+  }, [appState]);
+
   /**
    * Toggles the color theme between light and dark.
    */
@@ -155,6 +167,14 @@ const App: React.FC = () => {
     setUserAnswers([]);
     setError(null);
   };
+  
+  /**
+   * Sets the application state to begin the test running process.
+   */
+  const handleRunTests = () => {
+    setError(null);
+    setAppState('test_runner');
+  };
 
   /**
    * Renders the main content of the application based on the current appState.
@@ -177,6 +197,10 @@ const App: React.FC = () => {
         ) : null;
       case 'results':
         return <ResultsView userAnswers={userAnswers} onRestart={handleRestart} />;
+      case 'test_runner':
+        return <TestRunnerView />;
+      case 'test_results':
+        return <TestResultsView onRestart={handleRestart} />;
       case 'welcome':
       default:
         return (
@@ -248,13 +272,20 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen text-gray-800 dark:text-gray-200 font-sans">
+    <div className="min-h-screen text-gray-800 dark:text-gray-200 font-sans flex flex-col">
       <Header theme={theme} toggleTheme={toggleTheme} />
-      <main className="container mx-auto px-4 py-8 md:py-12 max-w-4xl">
+      <main className="container mx-auto px-4 py-8 md:py-12 max-w-4xl flex-grow">
         {renderContent()}
       </main>
       <footer className="text-center py-6 text-sm text-gray-500 dark:text-gray-400">
-        <p>Powered by Gen AI</p>
+        <p className="mb-2">Powered by Gen AI</p>
+        <button
+          onClick={handleRunTests}
+          className="text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500/50 rounded"
+          aria-label="Run unit test cases and show report"
+        >
+          Run Unit Test Cases
+        </button>
       </footer>
     </div>
   );

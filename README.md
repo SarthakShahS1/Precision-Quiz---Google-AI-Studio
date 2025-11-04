@@ -12,6 +12,7 @@ Precision Quiz is a modern web application that leverages the power of Google's 
 - **Data Export**: Download the generated questions or your quiz results in both CSV and PDF formats.
 - **Responsive Design**: Fully responsive layout that works on desktops, tablets, and mobile devices.
 - **Dual Themes**: Switch between a sleek Light and a comfortable Dark theme to suit your preference.
+- **In-App Test Reporting**: View a simulated unit test execution report, including code coverage statistics, directly within the application.
 
 ## Tech Stack
 
