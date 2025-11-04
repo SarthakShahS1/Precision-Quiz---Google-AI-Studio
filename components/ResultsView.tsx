@@ -6,7 +6,7 @@
  */
 import React, { useState } from 'react';
 import { UserAnswer } from '../types.ts';
-import { downloadResultsAsCSV, downloadResultsAsPDF } from '../../utils/download.ts';
+import { downloadResultsAsCSV, downloadResultsAsPDF } from '../utils/download.ts';
 import { CsvIcon, PdfIcon } from '../constants.tsx';
 
 interface ResultsViewProps {
