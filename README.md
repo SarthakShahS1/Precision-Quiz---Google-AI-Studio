@@ -31,14 +31,37 @@ Precision Quiz is a modern web application that leverages the power of Google's 
 
 This project is built with a simplified, serverless architecture that runs entirely in the browser. There is no build step or server-side dependency management required.
 
-1.  Ensure all project files (`index.html`, `index.tsx`, `App.tsx`, etc.) are in the same directory.
-2.  Serve the `index.html` file using a local web server. A simple way to do this is with Python:
-    ```bash
-    # If you have Python 3
-    python -m http.server
+### 1. Set Up Your API Key
+
+Before you start, you need to provide your Google AI API key.
+
+1.  In the root of the project folder, open the `.env` file and replace `your_actual_api_key_here` with your key:
+
     ```
-3.  Open your web browser and navigate to the local address provided by the server (e.g., `http://localhost:8000`).
-4.  The application will load and be ready to use.
+    GEMINI_API_KEY=your_actual_api_key_here
+    ```
+
+### 2. Install Dependencies
+
+Open your terminal in the project's root directory and run the following command to install the necessary packages:
+
+```bash
+npm install
+```
+
+### 3. Run the Development Server
+
+Once the installation is complete, start the local development server:
+
+```bash
+npm run dev
+```
+
+### 4. Open in Browser
+
+The server will start, and your terminal will display a local URL. Open your web browser and navigate to the address provided (usually `http://localhost:3000`).
+
+The application will now be running and ready to use.
 
 **Note**: An internet connection is required for the application to communicate with the Google Gemini API. An API key must also be configured for the application to function.
 
