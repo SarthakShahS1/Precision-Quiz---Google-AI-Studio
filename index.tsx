@@ -6,7 +6,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import App from './App.tsx';
 
 // Find the root element in the HTML where the React app will be mounted.
 const rootElement = document.getElementById('root');

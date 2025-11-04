@@ -5,9 +5,9 @@
  */
 
 import React from 'react';
-import { Theme } from '../types';
-import { SunIcon, MoonIcon } from '../constants';
-import Logo from './Logo';
+import { Theme } from '../types.ts';
+import { SunIcon, MoonIcon } from '../constants.tsx';
+import Logo from './Logo.tsx';
 
 interface HeaderProps {
   theme: Theme;

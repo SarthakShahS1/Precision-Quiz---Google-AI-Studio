@@ -6,7 +6,7 @@
  * into a test environment and mock the dependencies.
  */
 
-import { extractTextFromFile } from '../services/documentProcessor';
+import { extractTextFromFile } from '../services/documentProcessor.ts';
 
 // MOCK IMPLEMENTATIONS for testing purposes
 // In a real test setup (like Jest), these would be mocked automatically.

@@ -7,7 +7,7 @@
  */
 
 import { GoogleGenAI, Type } from "@google/genai";
-import { MCQ, Difficulty } from '../types';
+import { MCQ, Difficulty } from '../types.ts';
 
 // Retrieve the API key from environment variables.
 // This key is expected to be injected by the runtime environment.

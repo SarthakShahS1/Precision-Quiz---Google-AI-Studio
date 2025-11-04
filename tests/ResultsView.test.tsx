@@ -8,8 +8,8 @@
 import React from 'react';
 // In a real test setup, you would import these from '@testing-library/react'
 // import { render, screen, fireEvent } from '@testing-library/react';
-import ResultsView from '../components/ResultsView';
-import { UserAnswer } from '../types';
+import ResultsView from '../components/ResultsView.tsx';
+import { UserAnswer } from '../types.ts';
 // In a real test, you would mock this module
 // import * as downloadUtils from '../utils/download';
 

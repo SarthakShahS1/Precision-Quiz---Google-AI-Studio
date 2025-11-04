@@ -5,9 +5,9 @@
  * and allows downloading the results.
  */
 import React, { useState } from 'react';
-import { UserAnswer } from '../types';
-import { downloadResultsAsCSV, downloadResultsAsPDF } from '../utils/download';
-import { CsvIcon, PdfIcon } from '../constants';
+import { UserAnswer } from '../types.ts';
+import { downloadResultsAsCSV, downloadResultsAsPDF } from '../utils/download.ts';
+import { CsvIcon, PdfIcon } from '../constants.tsx';
 
 interface ResultsViewProps {
   userAnswers: UserAnswer[];

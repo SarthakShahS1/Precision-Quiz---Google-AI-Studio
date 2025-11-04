@@ -1,8 +1,9 @@
 
+
 import React from 'react';
-import { MCQ, Difficulty } from '../types';
-import { downloadAsCSV, downloadAsPDF } from '../utils/download';
-import { CsvIcon, PdfIcon } from '../constants';
+import { MCQ, Difficulty } from '../types.ts';
+import { downloadAsCSV, downloadAsPDF } from '../utils/download.ts';
+import { CsvIcon, PdfIcon } from '../constants.tsx';
 
 interface ControlsProps {
   mcqs: MCQ[];

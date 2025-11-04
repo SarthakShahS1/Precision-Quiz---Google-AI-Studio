@@ -6,8 +6,8 @@
 
 import React from 'react';
 // import { render, screen, fireEvent } from '@testing-library/react';
-import QuizView from '../components/QuizView';
-import { MCQ, Difficulty } from '../types';
+import QuizView from '../components/QuizView.tsx';
+import { MCQ, Difficulty } from '../types.ts';
 
 function conceptualQuizViewTests() {
     console.log('--- Running QuizView Tests ---');

@@ -7,18 +7,18 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Theme, MCQ, AppState, UserAnswer, Difficulty } from './types';
-import Header from './components/Header';
-import FileUpload from './components/FileUpload';
-import QuizView from './components/QuizView';
-import ResultsView from './components/ResultsView';
-import Loader from './components/Loader';
-import ErrorMessage from './components/ErrorMessage';
-import Welcome from './components/Welcome';
-import TestRunnerView from './components/TestRunnerView';
-import TestResultsView from './components/TestResultsView';
-import { extractTextFromFile } from './services/documentProcessor';
-import { generateMCQsFromText } from './services/geminiService';
+import { Theme, MCQ, AppState, UserAnswer, Difficulty } from './types.ts';
+import Header from './components/Header.tsx';
+import FileUpload from './components/FileUpload.tsx';
+import QuizView from './components/QuizView.tsx';
+import ResultsView from './components/ResultsView.tsx';
+import Loader from './components/Loader.tsx';
+import ErrorMessage from './components/ErrorMessage.tsx';
+import Welcome from './components/Welcome.tsx';
+import TestRunnerView from './components/TestRunnerView.tsx';
+import TestResultsView from './components/TestResultsView.tsx';
+import { extractTextFromFile } from './services/documentProcessor.ts';
+import { generateMCQsFromText } from './services/geminiService.ts';
 
 // A reusable feature card component, moved from Welcome.tsx
 const FeatureCard: React.FC<{ title: string; description: string; children: React.ReactNode }> = ({ title, description, children }) => (

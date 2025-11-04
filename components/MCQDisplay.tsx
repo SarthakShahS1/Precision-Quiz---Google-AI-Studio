@@ -1,6 +1,7 @@
 
+
 import React from 'react';
-import { MCQ, Difficulty } from '../types';
+import { MCQ, Difficulty } from '../types.ts';
 
 interface MCQDisplayProps {
   mcqs: MCQ[];

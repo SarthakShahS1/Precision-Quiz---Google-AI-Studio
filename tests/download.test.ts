@@ -5,8 +5,8 @@
  * but verifies the logic for data preparation.
  */
 
-import { downloadAsCSV, downloadAsPDF, downloadResultsAsCSV, downloadResultsAsPDF } from '../utils/download';
-import { MCQ, UserAnswer, Difficulty } from '../types';
+import { downloadAsCSV, downloadAsPDF, downloadResultsAsCSV, downloadResultsAsPDF } from '../utils/download.ts';
+import { MCQ, UserAnswer, Difficulty } from '../types.ts';
 
 // This would be a mock in a real test environment like Jest
 // const jspdfMock = {

@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useCallback } from 'react';
-import { UploadIcon } from '../constants';
+import { UploadIcon } from '../constants.tsx';
 
 interface FileUploadProps {
   onFileProcess: (file: File) => void;

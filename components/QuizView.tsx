@@ -4,7 +4,7 @@
  * handles user selections, and progresses through the questions.
  */
 import React, { useState } from 'react';
-import { MCQ } from '../types';
+import { MCQ } from '../types.ts';
 
 interface QuizViewProps {
   mcq: MCQ;

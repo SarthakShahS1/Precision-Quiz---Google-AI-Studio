@@ -5,8 +5,8 @@
  * A testing framework like Jest must be used to mock the @google/genai module.
  */
 
-import { generateMCQsFromText } from '../services/geminiService';
-import { Difficulty, MCQ } from '../types';
+import { generateMCQsFromText } from '../services/geminiService.ts';
+import { Difficulty, MCQ } from '../types.ts';
 
 // This is a simplified mock of the Gemini API client for testing.
 const mockGeminiAPI = {

@@ -7,7 +7,7 @@
 
 import React from 'react';
 // import { render, screen, fireEvent, act } from '@testing-library/react';
-import App from '../App';
+import App from '../App.tsx';
 // Mocks for services - in Jest, you'd use jest.mock()
 // import { extractTextFromFile } from '../services/documentProcessor';
 // import { generateMCQsFromText } from '../services/geminiService';

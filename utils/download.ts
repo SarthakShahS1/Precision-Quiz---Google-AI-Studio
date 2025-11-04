@@ -5,7 +5,7 @@
  * and browser interactions. For PDF generation, it relies on the global `jspdf` object, which is
  * expected to be loaded via a `<script>` tag in `index.html`.
  */
-import { MCQ, UserAnswer } from '../types';
+import { MCQ, UserAnswer } from '../types.ts';
 
 // TypeScript declaration for the global jspdf library.
 declare const jspdf: any;
