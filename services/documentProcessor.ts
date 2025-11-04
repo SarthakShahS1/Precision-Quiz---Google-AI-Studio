@@ -1,7 +1,9 @@
 /**
  * @file documentProcessor.ts
- * @description This service handles the client-side extraction of text from various file formats (PDF, DOCX, TXT).
- * It relies on global scripts (pdf.js, mammoth.js) loaded in index.html.
+ * @description This service is responsible for client-side text extraction from various file formats.
+ * It acts as a router, detecting the file's MIME type and delegating the extraction task to the
+ * appropriate specialized parser. This module depends on the `pdf.js` and `mammoth.js` libraries,
+ * which are loaded globally via `<script>` tags in `index.html`.
  */
 
 // TypeScript declarations for global libraries loaded via script tags.
@@ -12,7 +14,7 @@ declare const mammoth: any;
  * Extracts text from a file by routing it to the appropriate parser based on its MIME type.
  * @param file The file (PDF, DOCX, or TXT) from which to extract text.
  * @returns A promise that resolves with the extracted text as a string.
- * @throws An error if the file type is unsupported.
+ * @throws An error if the file type is unsupported or if parsing fails.
  */
 export const extractTextFromFile = async (file: File): Promise<string> => {
   if (file.type === 'application/pdf') {

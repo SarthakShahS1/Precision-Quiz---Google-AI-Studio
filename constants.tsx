@@ -1,13 +1,15 @@
 /**
  * @file constants.tsx
  * @description This file contains reusable SVG icon components used throughout the application.
- * Each icon is a functional React component for easy integration.
+ * Each icon is a functional React component for easy integration and consistent styling.
  */
 
 import React from 'react';
 
 /**
- * Sun icon, typically used for toggling light mode.
+ * Sun icon, used for the theme toggle button to switch to light mode.
+ * @param {object} props - Component props.
+ * @param {string} [props.className] - Optional CSS classes to apply to the SVG element.
  */
 export const SunIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg
@@ -27,7 +29,9 @@ export const SunIcon: React.FC<{ className?: string }> = ({ className }) => (
 );
 
 /**
- * Moon icon, typically used for toggling dark mode.
+ * Moon icon, used for the theme toggle button to switch to dark mode.
+ * @param {object} props - Component props.
+ * @param {string} [props.className] - Optional CSS classes to apply to the SVG element.
  */
 export const MoonIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg
@@ -47,7 +51,9 @@ export const MoonIcon: React.FC<{ className?: string }> = ({ className }) => (
 );
 
 /**
- * Upload icon, used for the file input and dropzone area.
+ * Upload icon, used prominently in the file input and dropzone area to indicate its function.
+ * @param {object} props - Component props.
+ * @param {string} [props.className] - Optional CSS classes to apply to the SVG element.
  */
 export const UploadIcon: React.FC<{ className?: string }> = ({ className }) => (
     <svg 
@@ -62,7 +68,9 @@ export const UploadIcon: React.FC<{ className?: string }> = ({ className }) => (
 );
 
 /**
- * CSV icon, used for the "Download CSV" button.
+ * CSV icon, used for the "Download CSV" button to provide a visual cue for the file type.
+ * @param {object} props - Component props.
+ * @param {string} [props.className] - Optional CSS classes to apply to the SVG element.
  */
 export const CsvIcon: React.FC<{ className?: string }> = ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -71,7 +79,9 @@ export const CsvIcon: React.FC<{ className?: string }> = ({ className }) => (
 );
   
 /**
- * PDF icon, used for the "Download PDF" button.
+ * PDF icon, used for the "Download PDF" button to provide a visual cue for the file type.
+ * @param {object} props - Component props.
+ * @param {string} [props.className] - Optional CSS classes to apply to the SVG element.
  */
 export const PdfIcon: React.FC<{ className?: string }> = ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">

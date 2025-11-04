@@ -2,7 +2,8 @@
  * @file App.tsx
  * @description The root component for the Precision Quiz application.
  * It manages the overall state, including theme, application flow (welcome, loading, quiz, results),
- * and handles the core logic for file processing and quiz progression.
+ * and handles the core logic for file processing and quiz progression. It also includes a top-level
+ * check to ensure the necessary API key is configured.
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -40,6 +41,8 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // State for storing and displaying error messages
   const [error, setError] = useState<string | null>(null);
+  // State for a persistent configuration error (e.g., missing API key)
+  const [configError, setConfigError] = useState<string | null>(null);
   // State to keep track of the currently processed file
   const [currentFile, setCurrentFile] = useState<File | null>(null);
   
@@ -54,6 +57,12 @@ const App: React.FC = () => {
   // State for the desired difficulty of the questions
   const [difficulty, setDifficulty] = useState<Difficulty | 'Any'>(Difficulty.EASY);
 
+  // Effect to check for essential configurations on startup
+  useEffect(() => {
+    if (!process.env.API_KEY) {
+      setConfigError("Configuration Error: The application's API key is missing. Please ensure it is set up correctly.");
+    }
+  }, []);
 
   // Effect to load and apply the saved theme from localStorage on initial render
   useEffect(() => {
@@ -92,9 +101,11 @@ const App: React.FC = () => {
 
   /**
    * Handles the entire process of file upload, text extraction, and MCQ generation.
+   * This function orchestrates the main workflow of the application.
    * @param file The file uploaded by the user.
    */
   const handleFileProcess = useCallback(async (file: File) => {
+    console.info("Starting file processing...");
     setIsLoading(true);
     setError(null);
     setMcqs([]);
@@ -102,17 +113,26 @@ const App: React.FC = () => {
     setAppState('loading');
 
     try {
-      // Step 1: Extract text from the uploaded document
+      // Step 1: Extract text from the uploaded document using the appropriate parser.
+      console.info(`Extracting text from ${file.name} (${file.type})...`);
       const text = await extractTextFromFile(file);
+
+      // A basic validation to ensure the extracted text is substantial enough for processing.
       if (!text || text.trim().length < 100) {
         throw new Error("Could not extract sufficient text. Please ensure the document is not empty, scanned, or protected.");
       }
-      // Step 2: Generate MCQs using the Gemini service
+      console.info("Text extraction successful.");
+
+      // Step 2: Send the extracted text to the Gemini service to generate MCQs.
+      console.info("Generating MCQs from extracted text...");
       const generatedMcqs = await generateMCQsFromText(text, numQuestions, difficulty);
+
       if (generatedMcqs.length === 0) {
         throw new Error("The AI could not generate any questions from this document. Please try a different one.");
       }
-      // Step 3: Update state and go directly to the quiz
+      console.info(`Successfully generated ${generatedMcqs.length} MCQs.`);
+      
+      // Step 3: Update state and transition the app to the quiz view.
       setMcqs(generatedMcqs);
       setCurrentQuestionIndex(0);
       setUserAnswers([]);
@@ -120,6 +140,7 @@ const App: React.FC = () => {
 
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred.';
+      console.error("An error occurred during file processing:", err);
       setError(`An error occurred: ${errorMessage}`);
       setAppState('welcome'); // Revert to welcome screen on error
       setMcqs([]);
@@ -180,6 +201,10 @@ const App: React.FC = () => {
    * Renders the main content of the application based on the current appState.
    */
   const renderContent = () => {
+    if (configError) {
+        return <ErrorMessage message={configError} />;
+    }
+    
     if (appState === 'loading') {
       return <Loader file={currentFile} />;
     }
@@ -206,7 +231,7 @@ const App: React.FC = () => {
         return (
           <>
             <Welcome />
-            <FileUpload onFileProcess={handleFileProcess} disabled={isLoading} />
+            <FileUpload onFileProcess={handleFileProcess} disabled={isLoading || !!configError} />
             
             <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-6 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-x-8 gap-y-4">
@@ -219,7 +244,7 @@ const App: React.FC = () => {
                             id="numQuestions"
                             value={numQuestions}
                             onChange={(e) => setNumQuestions(Number(e.target.value))}
-                            disabled={isLoading}
+                            disabled={isLoading || !!configError}
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white w-full"
                             aria-label="Select number of questions"
                         >
@@ -239,7 +264,7 @@ const App: React.FC = () => {
                             id="difficulty"
                             value={difficulty}
                             onChange={(e) => setDifficulty(e.target.value as Difficulty | 'Any')}
-                            disabled={isLoading}
+                            disabled={isLoading || !!configError}
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white w-full"
                             aria-label="Select difficulty level"
                         >

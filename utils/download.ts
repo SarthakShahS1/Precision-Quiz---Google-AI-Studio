@@ -1,7 +1,9 @@
 /**
  * @file download.ts
- * @description Contains utility functions for downloading quiz data in various formats (CSV, PDF).
- * Relies on the global jspdf object loaded in index.html.
+ * @description This module contains utility functions for generating and triggering the download
+ * of quiz data in various formats (CSV, PDF). It encapsulates the logic for data formatting
+ * and browser interactions. For PDF generation, it relies on the global `jspdf` object, which is
+ * expected to be loaded via a `<script>` tag in `index.html`.
  */
 import { MCQ, UserAnswer } from '../types';
 
@@ -9,7 +11,8 @@ import { MCQ, UserAnswer } from '../types';
 declare const jspdf: any;
 
 /**
- * Escapes a string for use in a CSV file. It handles commas, quotes, and newlines.
+ * Escapes a string for use in a CSV file. It handles commas, quotes, and newlines
+ * by enclosing the string in double quotes and escaping existing double quotes.
  * @param str The string to escape.
  * @returns The escaped string, ready for CSV embedding.
  */
@@ -23,7 +26,8 @@ const escapeCSV = (str: string | undefined): string => {
 };
 
 /**
- * Creates a blob and triggers a file download.
+ * Creates a blob from data and triggers a file download in the browser.
+ * This is a helper function to abstract the browser-specific download mechanism.
  * @param blob The data blob to download.
  * @param filename The desired name of the downloaded file.
  */
@@ -45,6 +49,7 @@ const triggerDownload = (blob: Blob, filename: string) => {
  * @param mcqs An array of MCQ objects.
  */
 export const downloadAsCSV = (mcqs: MCQ[]) => {
+  if (mcqs.length === 0) return;
   const headers = ['Question', 'Option A', 'Option B', 'Option C', 'Option D', 'Correct Answer', 'Difficulty'];
   const rows = mcqs.map(mcq => [
     escapeCSV(mcq.question),
@@ -64,6 +69,7 @@ export const downloadAsCSV = (mcqs: MCQ[]) => {
  * @param mcqs An array of MCQ objects.
  */
 export const downloadAsPDF = (mcqs: MCQ[]) => {
+    if (mcqs.length === 0) return;
     const { jsPDF } = jspdf;
     const doc = new jsPDF();
   
@@ -97,6 +103,7 @@ export const downloadAsPDF = (mcqs: MCQ[]) => {
  * @param userAnswers An array of UserAnswer objects representing the quiz results.
  */
 export const downloadResultsAsCSV = (userAnswers: UserAnswer[]) => {
+  if (userAnswers.length === 0) return;
   const headers = ['Question', 'Your Answer', 'Correct Answer', 'Result'];
   const rows = userAnswers.map(answer => [
     escapeCSV(answer.question),
@@ -115,6 +122,7 @@ export const downloadResultsAsCSV = (userAnswers: UserAnswer[]) => {
  * @param userAnswers An array of UserAnswer objects.
  */
 export const downloadResultsAsPDF = (userAnswers: UserAnswer[]) => {
+    if (userAnswers.length === 0) return;
     const { jsPDF } = jspdf;
     const doc = new jsPDF();
 

@@ -1,26 +1,27 @@
 /**
  * @file geminiService.ts
- * @description This service handles all interactions with the Google Gemini API.
- * It's responsible for sending document text to the AI and parsing the generated
- * multiple-choice questions.
+ * @description This service is the sole interface for interacting with the Google Gemini API.
+ * It is responsible for constructing a detailed prompt based on user-provided text and settings,
+ * sending the request to the AI model, and then parsing and validating the structured JSON response
+ * to ensure it conforms to the application's data model for Multiple Choice Questions (MCQs).
  */
 
 import { GoogleGenAI, Type } from "@google/genai";
 import { MCQ, Difficulty } from '../types';
 
 // Retrieve the API key from environment variables.
-const API_KEY = process.env.API_KEY;
-
-if (!API_KEY) {
-  throw new Error("API_KEY environment variable is not set.");
-}
+// This key is expected to be injected by the runtime environment.
+// A check in App.tsx ensures the app provides a graceful error if this is missing.
+const API_KEY = process.env.API_KEY!;
 
 // Initialize the GoogleGenAI client with the API key.
 const ai = new GoogleGenAI({ apiKey: API_KEY });
 
 /**
  * Defines the expected JSON schema for the AI's response.
- * This ensures the AI returns data in a structured and predictable format.
+ * This is a powerful feature that instructs the Gemini model to return data
+ * in a structured, predictable format, which significantly reduces the need for
+ * complex string parsing and improves the reliability of the output.
  */
 const responseSchema = {
   type: Type.ARRAY,
@@ -54,17 +55,21 @@ const responseSchema = {
  * Generates a set of multiple-choice questions from a given text using the Gemini model.
  * @param text The source text extracted from a document.
  * @param numQuestions The number of questions to generate.
- * @param difficulty The desired difficulty for the questions.
+ * @param difficulty The desired difficulty for the questions ('Easy', 'Medium', 'Hard', or 'Any').
  * @returns A promise that resolves to an array of MCQ objects.
- * @throws An error if the API call fails or returns malformed data.
+ * @throws An error if the API call fails or returns data that cannot be parsed or validated.
  */
 export const generateMCQsFromText = async (text: string, numQuestions: number, difficulty: Difficulty | 'Any'): Promise<MCQ[]> => {
-  // Conditionally set the difficulty instruction for the AI.
+  // Dynamically create the difficulty instruction based on user selection.
   const difficultyConstraint = difficulty !== 'Any'
     ? `4. A difficulty rating of '${difficulty}'. All questions must conform to this difficulty.`
     : `4. A difficulty rating of 'Easy', 'Medium', or 'Hard'.`;
 
-  // The prompt provides clear instructions to the AI model.
+  // The prompt is engineered to give the AI clear, structured instructions.
+  // 1. It defines the goal: generate a specific number of MCQs.
+  // 2. It specifies the required output format for each MCQ (question, 4 options, correct answer, difficulty).
+  // 3. It incorporates the user's desired difficulty level, making the output dynamic.
+  // 4. It provides the document text as context, truncated to a safe length to avoid exceeding API limits.
   const prompt = `
     Based on the following document text, generate ${numQuestions} high-quality multiple-choice questions (MCQs).
     For each MCQ, you must provide:
@@ -88,9 +93,13 @@ export const generateMCQsFromText = async (text: string, numQuestions: number, d
       model: "gemini-2.5-flash",
       contents: prompt,
       config: {
+        // `responseMimeType: "application/json"` instructs Gemini to output a JSON string.
         responseMimeType: "application/json",
+        // `responseSchema` enforces the defined structure, dramatically improving reliability.
         responseSchema: responseSchema,
-        temperature: 0.7, // A balanced temperature for creative but relevant questions.
+        // `temperature` controls creativity. 0.7 is a good balance for generating
+        // factually-grounded but varied questions without being overly rigid or imaginative.
+        temperature: 0.7, 
       },
     });
 
@@ -98,10 +107,12 @@ export const generateMCQsFromText = async (text: string, numQuestions: number, d
     const parsedData = JSON.parse(jsonString);
 
     if (!Array.isArray(parsedData)) {
-      throw new Error("AI returned data in an unexpected format.");
+      throw new Error("AI returned data in an unexpected, non-array format.");
     }
 
-    // Validate the structure of the returned data to ensure it matches the MCQ interface.
+    // This validation step is a critical final safeguard. Even with a schema, the AI might
+    // occasionally produce data that doesn't perfectly align with our logic (e.g., a `correctAnswer`
+    // that isn't one of the options). This filter ensures only 100% valid MCQs reach the user.
     const validatedMcqs: MCQ[] = parsedData.filter(item => 
       item.question &&
       Array.isArray(item.options) &&
@@ -111,14 +122,15 @@ export const generateMCQsFromText = async (text: string, numQuestions: number, d
       ['Easy', 'Medium', 'Hard'].includes(item.difficulty)
     );
 
-    // If parsing was successful but validation removed all items, it indicates a data format issue.
+    // If parsing was successful but validation removed all items, it indicates a data format issue from the AI.
     if(validatedMcqs.length === 0 && parsedData.length > 0) {
-      throw new Error("AI returned malformed MCQ data. Please try again.");
+      throw new Error("AI returned malformed MCQ data that failed validation. Please try again.");
     }
 
     return validatedMcqs;
   } catch (error) {
     console.error("Error calling Gemini API:", error);
+    // This generic error is user-facing, while the detailed error is logged to the console.
     throw new Error("Failed to generate MCQs from the AI. The content might be too complex or the service may be temporarily unavailable.");
   }
 };

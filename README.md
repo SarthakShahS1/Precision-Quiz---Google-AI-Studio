@@ -4,7 +4,7 @@ Precision Quiz is a modern web application that leverages the power of Google's 
 
 ## Features
 
-- **AI-Powered Generation**: Uses the Gemini API to intelligently create relevant and high-quality MCQs from document content.
+- **AI-Powered Generation**: Uses the Gemini API with a carefully engineered prompt to create relevant and high-quality MCQs. The system instructs the AI to adhere to a strict JSON schema, ensuring the output is always structured correctly with a question, four options, a correct answer, and a difficulty rating. This schema enforcement makes the generation process highly reliable.
 - **Multiple File Formats**: Supports uploading PDF, DOCX, and TXT files.
 - **Customizable Quizzes**: Users can specify the number of questions and the desired difficulty level (Easy, Medium, Hard).
 - **Interactive Quiz Interface**: A clean, step-by-step quiz view with a progress bar to test your knowledge.
@@ -40,7 +40,7 @@ This project is built with a simplified, serverless architecture that runs entir
 3.  Open your web browser and navigate to the local address provided by the server (e.g., `http://localhost:8000`).
 4.  The application will load and be ready to use.
 
-**Note**: An internet connection is required for the application to communicate with the Google Gemini API.
+**Note**: An internet connection is required for the application to communicate with the Google Gemini API. An API key must also be configured for the application to function.
 
 ## Unit Test Cases
 
