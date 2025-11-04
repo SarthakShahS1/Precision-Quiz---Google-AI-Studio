@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <!-- Replaced missing favicon with an inline SVG to resolve 404 errors -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50'%3e%3ccircle cx='25' cy='25' r='18' fill='none' stroke='rgb(59, 130, 246)' stroke-width='6' /%3e%3ccircle cx='25' cy='25' r='8' fill='rgb(59, 130, 246)' /%3e%3c/svg%3e" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Precision Quiz</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -31,9 +32,12 @@
   }
 }
 </script>
+<!-- Babel for in-browser transpilation of TSX/JSX -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
   <body class="bg-gray-100 dark:bg-gray-900 bg-gradient-to-br from-gray-50 to-gray-200 dark:from-gray-900 dark:to-slate-950 transition-colors duration-500">
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+    <!-- Changed script type to "text/babel" to enable transpilation -->
+    <script type="text/babel" data-type="module" src="/index.tsx"></script>
   </body>
 </html>
